@@ -1,0 +1,9 @@
+{
+    "openai": {
+        "base_url": "http://192.168.88.3:11434/v1",
+        "api_key": "ollama-empty-key",
+        "model_name": "qwen3:4b"
+    },
+    "max_history_messages": 10,
+    "max_history_content_len": 8096
+}

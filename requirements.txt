@@ -1,0 +1,9 @@
+loguru
+requests
+fastmcp==2.10.3
+fastapi==0.116.0
+uvicorn==0.35.0
+starlette==0.46.2
+sse-starlette==2.4.1
+openai==1.93.2
+pytz
