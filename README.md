@@ -11,7 +11,7 @@ bash复制编辑src/
 ├── config.json     # 配置文件，包含大模型 API 设置等
 ```
 
-------
+---
 
 ## ✨ 特性特点
 
@@ -20,7 +20,7 @@ bash复制编辑src/
 - ⚙️ **多服务并发支持**：单次请求可同时使用多个 SSE MCP 服务（工具）
 - 📤 **流式输出**：使用 SSE 协议返回响应，实现实时输出体验
 
-------
+---
 
 ## ⚠️ 注意事项
 
@@ -28,7 +28,7 @@ bash复制编辑src/
 - 后端大模型需要支持 **Tool Call** 能力。如果不支持，需要手动修改 `client.py` 中的 `process_query_stream()` 实现tool call逻辑
 - 当前仅支持基于 **SSE 协议** 的 MCP 服务接入
 
-------
+---
 
 ## 🚀 快速开始
 
@@ -40,11 +40,9 @@ bash复制编辑src/
 pip install -r requirements.txt
 ```
 
-
-
 ### 2 配置大模型
 
-根据下面配置说明修改`src/config.json`
+根据下面配置说明修改 `src/config.json`
 
 ```json
 {
@@ -59,8 +57,6 @@ pip install -r requirements.txt
 }
 ```
 
-
-
 ### 3. 启动服务
 
 ```
@@ -70,7 +66,7 @@ python app.py
 
 服务启动后，默认接口地址为：`http://127.0.0.1:8003/`
 
-------
+---
 
 ## 🧪 测试Demo
 
@@ -87,13 +83,13 @@ python time_server.py
 
 ## 2 测试请求
 
-请求例子代码是`demo\req.py` ，根据所需的mcp服务修改 mcp_list参数，以及修改提问
+请求例子代码是 `demo\req.py` ，根据所需的mcp服务修改 mcp_list参数，以及修改提问
 
 > 前面启动了一个获取时间的mcp服务，现在提问获取伦敦的现在时间，模型就会调用工具完成任务
 
 ```
 mcp_list = ["http://127.0.0.1:21113/sse"]
-query = "查询伦敦现在时间"  # 问题
+query = "查询伦敦现在是多少点"  # 问题
 ```
 
 sse 结果
@@ -152,8 +148,6 @@ data: [DONE]
 # 4  type=warning 说明本次提问没有使用工具，由大模型直接回答
 {"type": "warning", "data": "本次提问没有使用工具"}
 ```
-
-
 
 ## 📄 License
 
