@@ -5,13 +5,6 @@
 @Desc   : mcp client
 '''
 
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
-
-
 from fastapi import HTTPException
 import json
 from fastmcp import Client
