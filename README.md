@@ -5,7 +5,7 @@
 ## 📁 文件结构
 
 ```
-bash复制编辑src/
+src/
 ├── app.py          # FastAPI 应用主入口，定义接口路由
 ├── client.py       # MCP Client逻辑，封装大模型与工具交互
 ├── config.json     # 配置文件，包含大模型 API 设置等
