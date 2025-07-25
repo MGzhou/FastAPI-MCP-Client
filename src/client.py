@@ -10,21 +10,18 @@ import json
 from fastmcp import Client
 from fastmcp.client.transports import SSETransport
 from openai import AsyncOpenAI
-import time
 from typing import AsyncGenerator, Dict, Any, List, Tuple
-from types import SimpleNamespace
 import asyncio
 from loguru import logger
 import traceback
 
-"""单轮对话，不会进行多轮调用工具"""
 
 class MCPClient:
     def __init__(self, config):
         self.config = config
-        self.sessions: Dict[str, Client] = {}  # {server_url: Client}
-        self.tool_mapping: Dict[str, Tuple[str, Client]] = {}  # {tool_name: (server_url, Client)}
-        self.available_tools: Dict[str, List[Dict]] = {}  # {server_url: tools}
+        self.sessions: Dict[str, Client] = {}                   # {server_url: Client}
+        self.tool_mapping: Dict[str, Tuple[str, Client]] = {}   # {tool_name: (server_url, Client)}
+        self.available_tools: Dict[str, List[Dict]] = {}        # {server_url: tools}
         self.client = AsyncOpenAI(base_url=config["openai"]["base_url"], api_key=config["openai"]["api_key"])
         self.model_name = config["openai"]["model_name"]
 
@@ -107,14 +104,10 @@ class MCPClient:
             response = await self.client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
-                tools=available_tools
+                tools=available_tools,
+                stream=False
             )
-
             message = response.choices[0].message
-
-            # 不返回查询工具的content, 在qwen3中是思考内容
-            # if message.content:
-            #     yield {"type": "content", "data": message.content}
 
             # 2 处理工具调用
             if message.tool_calls:
@@ -220,12 +213,12 @@ class MCPClient:
                         }
 
                 # 3 根据工具结果回复用户问题
-                stream = await self.client.chat.completions.create(
+                stream_response = await self.client.chat.completions.create(
                     model=self.model_name,
                     messages=messages,
                     stream=True
                 )
-                async for chunk in stream:
+                async for chunk in stream_response:
                     if chunk.choices and chunk.choices[0].delta:
                         delta = chunk.choices[0].delta
                         if delta.content:
@@ -233,12 +226,12 @@ class MCPClient:
             else:
                 yield {"type": "warning", "data": "本次提问没有使用工具"}
                 # 普通问答
-                stream = await self.client.chat.completions.create(
+                stream_response = await self.client.chat.completions.create(
                     model=self.model_name,
                     messages=messages,
                     stream=True
                 )
-                async for chunk in stream:
+                async for chunk in stream_response:
                     if chunk.choices and chunk.choices[0].delta:
                         delta = chunk.choices[0].delta
                         if delta.content:
